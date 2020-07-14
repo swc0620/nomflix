@@ -1,0 +1,8 @@
+/* 'create-react-app' helps you isolate css to the component, therefore you can reuse className */
+.navList {
+    display: flex;
+}
+
+/* .nav-list {
+    background-color: blue;
+} */
