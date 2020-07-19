@@ -12,11 +12,10 @@ export default class extends React.Component {
         error: null
     }
 
-    componentDidMount() {
-        this.handleSubmit();
-    }
-
-    handleSubmit = () => {
+    handleSubmit = (event) => {
+        // In React, by default, pressing enter key is submit. We need to intercept that event. 
+        event.preventDefault();
+        
         const { searchTerm } = this.state;
         if (searchTerm !== "") {
             this.searchByTerm();
@@ -29,8 +28,12 @@ export default class extends React.Component {
                 loading: true
             })
         try {
-            const {data: { results: movieResults }} = await moviesApi.search(searchTerm);
-            const {data: { results: tvResults }} = await tvApi.search(searchTerm);
+            const {
+                data: { results: movieResults }
+            } = await moviesApi.search(searchTerm);
+            const {
+                data: { results: tvResults }
+            } = await tvApi.search(searchTerm);
             this.setState({
                 movieResults,
                 tvResults
@@ -46,6 +49,13 @@ export default class extends React.Component {
         }
     }
 
+    updateTerm = (event) => {
+        const { target: { value }} = event;
+        this.setState({
+            searchTerm: value
+        })
+    }
+
     render() {
         const { movieResults, tvResults, searchTerm, loading, error } = this.state;
         return (
@@ -56,6 +66,7 @@ export default class extends React.Component {
                 loading={loading}
                 error={error}
                 handleSubmit={this.handleSubmit}
+                updateTerm={this.updateTerm}
             />
         )
     }
